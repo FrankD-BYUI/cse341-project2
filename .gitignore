@@ -104,5 +104,4 @@ dist
 .tern-port
 
 # misc files
-db.sql
 .env
