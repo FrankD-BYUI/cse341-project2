@@ -1,10 +1,15 @@
 const connectionString = process.env.DATABASE_URL;
-const {Pool} = require('pg');
-const pool = new Pool({connectionString: connectionString});
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+const {
+  Pool
+} = require('pg');
+const pool = new Pool({
+  connectionString: connectionString,
+  ssl: { rejectUnauthorized: false}
+});
+//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Returns a list of all authors
-function queryAllAuthors(callback){
+function queryAllAuthors(callback) {
   const text = "SELECT author_id, author_name, author_dob, author_dod, author_birthcountry FROM authors";
   pool.query(text, function (err, result) {
     if (err) {

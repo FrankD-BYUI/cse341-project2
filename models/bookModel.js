@@ -1,7 +1,12 @@
 const connectionString = process.env.DATABASE_URL;
-const {Pool} = require('pg');
-const pool = new Pool({connectionString: connectionString});
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+const {
+  Pool
+} = require('pg');
+const pool = new Pool({
+  connectionString: connectionString,
+  ssl: { rejectUnauthorized: false}
+});
+//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 function queryBooks(searchTerm, callback) {
   const text = "SELECT book_id, book_title, book_pubdate, book_description, book_rating, books.author_id FROM books JOIN authors ON books.author_id = authors.author_id WHERE book_title ILIKE '%' || $1 || '%' OR book_description ILIKE '%' || $1 || '%' OR author_name ILIKE '%' || $1 || '%'";
