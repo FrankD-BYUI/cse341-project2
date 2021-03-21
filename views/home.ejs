@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="flex-container">
+    <div id="page-container">
+      <header>
+        <h1 id="page-heading">This is the homepage</h1>
+        <ul id="navBar">
+          <li><a href="javascript:renderHome();">Home</a></li>
+          <li>|</li>
+          <li><a href="javascript:renderBooks();">Books</a></li>
+          <li>|</li>
+          <li><a href="javascript:renderAuthors();">Authors</a></li>
+          <li>|</li>
+          <li>
+            <form action="javascript:search();" method="get">
+              <input type="text" name="q" id="q" required>
+              <input type="submit" value="Search">
+            </form>
+          </li>
+        </ul>
+      </header>
+
+      <div id="content-div">
+        <p>hi</p>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

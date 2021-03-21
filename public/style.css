@@ -1,3 +1,70 @@
-.red {
-  color: red;
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'VT323', monospace;
+  height: 100%;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+#flex-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(50vh - 313px);
+}
+
+#page-container {
+  border: 3px dashed white;
+  height: 600px;
+  width: 800px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#page-heading {
+  text-align: center;
+  margin: 0;
+}
+
+#navBar {
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+  padding-top: 0;
+}
+
+#navBar a,
+#navBar a:visited {
+  color: cyan;
+  text-decoration: none;
+  font-size: 1.25em;
+}
+
+#navBar a:hover {
+  color: darkcyan;
+}
+
+.book-card {
+  margin: 8px;
+}
+
+.book-card h2, 
+.book-card p {
+  margin: 0;
 }

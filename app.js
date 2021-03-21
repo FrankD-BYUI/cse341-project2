@@ -1,36 +1,31 @@
 const express = require('express');
 const path = require('path');
-const PORT = process.env.PORT || 5000;
-const connectionString = process.env.DATABASE_URL;
-const fs = require('fs');
-//const {Client} = require('pg');
-//const getAuthor = require('./author_model');
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+require('dotenv').config();
+const PORT = process.env.PORT;
+const authorController = require('./controllers/authorController.js');
+const bookController = require('./controllers/bookController.js');
 
-// const { Client } = require('pg');
-// const client = new Client();
-// client.connect();
-// client.query("SELECT * from authors where author_name LIKE '%Gaiman%'", (err, res) => {
-//   console.log(err ? err.stack : res.rows);
-//   client.end();
-// });
+const connectionString = process.env.DATABASE_URL;
+const {
+  Pool
+} = require('pg');
+const getAuthor = require('./models/authorModel.js');
+const pool = new Pool({
+  connectionString: connectionString
+});
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => {
-    res.render('pages/home')
-    // console.log("Received a request for /");
-    // res.write("This is the root");
-    // res.end();
+    res.render('home');
   })
-  .get('/test', (req, res) => {
-    res.render('pages/tester')
-  })
-  .get('/authorsearch', (req, res) => {
-    const searchTerm = req.query.q;
-    res.write("this feature isn't working yet.");
-    res.end();
-  })
+  .get('/author/search/:q', authorController.getAuthorsList)
+  .get('/author/id/:id', authorController.getAuthor)
+  .get('/author', authorController.getAllAuthors)
+  .get('/book/search/:q', bookController.searchBooks)
+  .get('/book/id/:id', bookController.getBookById)
+  .get('/book/authorid/:id', bookController.getBooksByAuthorId)
+  .get('/book', bookController.getAllBooks)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
