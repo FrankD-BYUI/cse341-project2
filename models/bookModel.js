@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 function queryBooks(searchTerm, callback) {
-  const text = "SELECT book_id, book_title, to_char(book_pubdate, 'Mon DD, YYYY') AS book_pubdate, book_description, book_rating, books.author_id FROM books JOIN authors ON books.author_id = authors.author_id WHERE book_title ILIKE '%' || $1 || '%' OR book_description ILIKE '%' || $1 || '%' OR author_name ILIKE '%' || $1 || '%'";
+  const text = "SELECT book_id, book_title, to_char(book_pubdate, 'Mon DD, YYYY') AS book_pubdate, book_description, book_rating, books.author_id, author_name FROM books JOIN authors ON books.author_id = authors.author_id WHERE book_title ILIKE '%' || $1 || '%' OR book_description ILIKE '%' || $1 || '%' OR author_name ILIKE '%' || $1 || '%'";
   const values = [searchTerm];
 
   pool.query(text, values, function (err, result) {
