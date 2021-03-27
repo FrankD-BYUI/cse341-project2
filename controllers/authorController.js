@@ -27,8 +27,18 @@ function getAllAuthors(req, res) {
   });
 }
 
+function getAuthorCount(req, res) {
+  authorModel.queryAuthorCount((result) => {
+    res.json({
+      result: result
+    });
+    res.end();
+  });
+}
+
 module.exports = {
   getAuthorsList: getAuthorsList,
   getAuthor: getAuthor,
-  getAllAuthors: getAllAuthors
+  getAllAuthors: getAllAuthors,
+  getAuthorCount: getAuthorCount
 };

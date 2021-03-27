@@ -4,20 +4,18 @@ const {
 } = require('pg');
 const pool = new Pool({
   connectionString: connectionString,
-  ssl: { rejectUnauthorized: false}
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Returns a list of all authors
 function queryAllAuthors(callback) {
-  const text = "SELECT author_id, author_name, author_dob, author_dod, author_birthcountry FROM authors";
+  const text = "SELECT author_id, author_name, to_char(author_dob, 'Mon DD, YYYY') AS author_dob, to_char(author_dod, 'Mon DD, YYYY') AS author_dod, author_birthcountry FROM authors";
   pool.query(text, function (err, result) {
     if (err) {
       console.log(err.stack);
     } else {
-      // console.log("Back from DB with result:");
-      // console.log(result.rows);
-
       callback(result.rows);
     }
   })
@@ -26,16 +24,13 @@ function queryAllAuthors(callback) {
 // returns a list of authors with a name matching the search term
 function queryAuthorsByName(searchTerm, callback) {
   // "||" is the string concatination thign for postgresql
-  const text = "SELECT author_id, author_name, author_dob, author_dod, author_birthcountry FROM authors WHERE author_name ILIKE '%' || $1 || '%'";
+  const text = "SELECT author_id, author_name, to_char(author_dob, 'Mon DD, YYYY') AS author_dob, to_char(author_dod, 'Mon DD, YYYY') AS author_dod, author_birthcountry FROM authors WHERE author_name ILIKE '%' || $1 || '%'";
   const values = [searchTerm];
 
   pool.query(text, values, function (err, result) {
     if (err) {
       console.log(err.stack);
     } else {
-      // console.log("Back from DB with result:");
-      // console.log(result.rows);
-
       callback(result.rows);
     }
   })
@@ -44,25 +39,32 @@ function queryAuthorsByName(searchTerm, callback) {
 // returns an author with specified ID
 function queryAuthorById(id, callback) {
   // "||" is the string concatination thign for postgresql
-  const text = "SELECT author_id, author_name, author_dob, author_dod, author_birthcountry FROM authors WHERE author_id = $1";
+  const text = "SELECT author_id, author_name, to_char(author_dob, 'Mon DD, YYYY') AS author_dob, to_char(author_dod, 'Mon DD, YYYY') AS author_dod, author_birthcountry FROM authors WHERE author_id = $1";
   const values = [id];
 
   pool.query(text, values, function (err, result) {
     if (err) {
       console.log(err.stack);
     } else {
-      // console.log("Back from DB with result:");
-      // console.log(result.rows);
-
       callback(result.rows);
     }
   })
 }
 
-
+function queryAuthorCount(callback) {
+  const text = "SELECT COUNT(*) AS count from authors"
+  pool.query(text, function (err, result) {
+    if (err) {
+      console.log(err.stack);
+    } else {
+      callback(result.rows);
+    }
+  })
+}
 
 module.exports = {
   queryAuthorsByName: queryAuthorsByName,
   queryAllAuthors: queryAllAuthors,
-  queryAuthorById: queryAuthorById
+  queryAuthorById: queryAuthorById,
+  queryAuthorCount: queryAuthorCount
 };

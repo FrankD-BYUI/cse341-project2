@@ -13,7 +13,7 @@
   <div id="flex-container">
     <div id="page-container">
       <header>
-        <h1 id="page-heading">This is the homepage</h1>
+
         <ul id="navBar">
           <li><a href="javascript:renderHome();">Home</a></li>
           <li>|</li>
@@ -22,7 +22,7 @@
           <li><a href="javascript:renderAuthors();">Authors</a></li>
           <li>|</li>
           <li>
-            <form action="javascript:search();" method="get">
+            <form action="javascript:renderSearch();" method="get" id="searchForm">
               <input type="text" name="q" id="q" required>
               <input type="submit" value="Search">
             </form>
@@ -30,8 +30,8 @@
         </ul>
       </header>
 
-      <div id="content-div">
-        <p>hi</p>
+      <div id="content-div" class="home-content">
+        <h1>Loading...</h1>
       </div>
     </div>
   </div>

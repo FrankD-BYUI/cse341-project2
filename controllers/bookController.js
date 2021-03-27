@@ -36,9 +36,19 @@ function getBooksByAuthorId(req, res) {
   });
 }
 
+function getBookCount(req, res) {
+  bookModel.queryBookCount((result) => {
+    res.json({
+      result: result
+    });
+    res.end();
+  });
+}
+
 module.exports = {
   searchBooks: searchBooks,
   getBookById: getBookById,
   getAllBooks: getAllBooks,
-  getBooksByAuthorId: getBooksByAuthorId
+  getBooksByAuthorId: getBooksByAuthorId,
+  getBookCount: getBookCount
 }

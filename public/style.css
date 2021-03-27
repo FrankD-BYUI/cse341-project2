@@ -16,7 +16,12 @@ body {
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: normal;
 }
 
@@ -51,20 +56,49 @@ h1, h2, h3, h4, h5, h6 {
 
 #navBar a,
 #navBar a:visited {
-  color: cyan;
-  text-decoration: none;
   font-size: 1.25em;
 }
 
-#navBar a:hover {
+a,
+a:visited {
+  color: cyan;
+  text-decoration: none;
+}
+
+a:hover {
   color: darkcyan;
 }
 
-.book-card {
-  margin: 8px;
+.card {
+  margin: 12px;
 }
 
-.book-card h2, 
-.book-card p {
+.books-content h2,
+.authors-content h2,
+.books-content p,
+.authors-content p,
+#home-head p {
   margin: 0;
+}
+
+.home-content {
+  margin: 12px;
+}
+
+#home-head {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+#home-head h1 {
+  margin-bottom: .25em;
+}
+
+.book-content,
+.author-content {
+  margin: 12px;
+}
+
+.author-content h2 {
+  margin-bottom: 0;
 }
