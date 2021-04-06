@@ -124,7 +124,7 @@ function renderSearch(searchTerm) {
   $("#content-div").addClass("books-content");
   $.get(`./book/search/${searchTerm}`, function (data) {
     $("#content-div").empty();
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < 8 || i < data.result.length; i++) {
       let $newDiv = $("<div class = 'card'></div>");
       $newDiv.append("<h2><a href='javascript:renderBook(" + data.result[i].book_id + ")'>" + data.result[i].book_title + "</h2>");
       $newDiv.append("<span>By: <a href='javascript:renderAuthor(" + data.result[i].author_id + ")'>" + data.result[i].author_name + "</a></span>");
@@ -186,7 +186,7 @@ function logout() {
     loggedIn = false;
     user = {};
     $("#navLogLink").text("Log In");
-    $("#navLogLink").attr("href", "javascript:login();")
+    $("#navLogLink").attr("href", "javascript:renderLogin();")
     renderHome();
   })
 }
