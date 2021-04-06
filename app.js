@@ -1,21 +1,22 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const authorController = require('./controllers/authorController.js');
 const bookController = require('./controllers/bookController.js');
-
-const connectionString = process.env.DATABASE_URL;
-const {
-  Pool
-} = require('pg');
-const getAuthor = require('./models/authorModel.js');
-const pool = new Pool({
-  connectionString: connectionString
-});
+const userController = require('./controllers/userController.js');
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(express.urlencoded({
+    extended: true
+  }))
+  .use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+  }))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => {
@@ -30,4 +31,7 @@ express()
   .get('/book/authorid/:id', bookController.getBooksByAuthorId)
   .get('/book/count', bookController.getBookCount)
   .get('/book', bookController.getAllBooks)
+  .post('/user/register', userController.registerUser)
+  .post('/user/login', userController.login)
+  .post('/user/logout', userController.logout)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));

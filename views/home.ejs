@@ -21,8 +21,10 @@
           <li>|</li>
           <li><a href="javascript:renderAuthors();">Authors</a></li>
           <li>|</li>
+          <li><a href='javascript:renderLogin()' id="navLogLink">Log In</a></li>
+          <li>|</li>
           <li>
-            <form action="javascript:renderSearch();" method="get" id="searchForm">
+            <form action="javascript:renderSearch();" method="GET" id="searchForm">
               <input type="text" name="q" id="q" required>
               <input type="submit" value="Search">
             </form>

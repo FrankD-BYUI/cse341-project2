@@ -102,3 +102,17 @@ a:hover {
 .author-content h2 {
   margin-bottom: 0;
 }
+
+#loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#loginForm label {
+  margin-bottom: 12px;
+}
+
+.login-content {
+  margin-left: auto;
+  margin-right: auto;
+}

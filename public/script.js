@@ -1,5 +1,14 @@
+let loggedIn = false;
+let user = {};
+
 $(document).ready(function () {
   renderHome();
+})
+
+// Add listener to search button
+$("#searchForm").submit(function (event) {
+  event.preventDefault();
+  renderSearch($("#q").val());
 })
 
 // prep #content-div for new content
@@ -16,9 +25,19 @@ function renderHome() {
   $.get("./book/count", function (bookCount) {
     $.get("./author/count", function (authorCount) {
       $("#content-div").empty();
-      $("#content-div").append("<div id='home-head'><h1>Welcome to the Library</h1><p>We have " +
-        bookCount.result[0].count + " books on file from " + authorCount.result[0].count +
-        " authors!</p></div><div><h2>Please <a href='javascript:renderLogin()'>log in</a> to create a reading list.</h2></div>")
+      $("#content-div").append("<div id='home-head'></div>");
+
+      $("#home-head").append("<h1>Welcome to the Library</h1>");
+      $("#home-head").append("<p>We have " + bookCount.result[0].count + " books on file from " +
+        authorCount.result[0].count + " authors!</p>");
+
+      let $newDiv = $("<div></div>")
+      if (!loggedIn) {
+        $newDiv.append("<h2>Please <a href='javascript:renderLogin()'>log in</a> to create a reading list.</h2>")
+      } else {
+        $newDiv.append("<h2>Thank you for logging in.</h2>")
+      }
+      $("#content-div").append($newDiv);
     })
   })
 }
@@ -57,6 +76,7 @@ function renderAuthors() {
   })
 }
 
+// render the books view
 function renderBook(bookId) {
   clearContent();
   $("#content-div").addClass("book-content");
@@ -70,6 +90,7 @@ function renderBook(bookId) {
   })
 }
 
+// render the view for a specific author
 function renderAuthor(authorId) {
   clearContent();
   $("#content-div").addClass("author-content");
@@ -96,11 +117,7 @@ function renderAuthor(authorId) {
   })
 }
 
-$("#searchForm").submit(function (event) {
-  event.preventDefault();
-  renderSearch($("#q").val());
-})
-
+// render search results
 function renderSearch(searchTerm) {
   //alert(searchTerm);
   clearContent();
@@ -122,13 +139,54 @@ function renderSearch(searchTerm) {
 }
 
 function renderLogin() {
+  clearContent();
+  $("#content-div").addClass("login-content");
+  $("#content-div").empty();
+  $("#content-div").append("<h1>Please log in</h1>")
 
-}
+  let $form = $("<form action='javascript:login();' method='POST' id='loginForm'></form>");
+  $form.append("<label for='user_name'>Username: <input type='text' name='user_name' id='user_name' required></label>")
+  $form.append("<label for='user_password'>Password: <input type='password' name='user_password' id='user_password' required></label>")
+  $form.append("<input type='submit' value='Log in'>")
+  $("#content-div").append($form);
 
-function renderLogout() {
-
+  $("#content-div").append("<p>Don't have an account? <button id='register-btn' onclick='renderRegister()'>Register</button></p>");
+  $("#content-div").append("<p id='message'></p>");
 }
 
 function renderRegister() {
 
+}
+
+function login() {
+  let user_name = $("#user_name").val();
+  let user_password = $("#user_password").val();
+  let params = {
+    user_name: user_name,
+    user_password: user_password
+  }
+
+  $.post('./user/login', params, function (result) {
+    //console.log(result);
+    if (result && result.success) {
+      loggedIn = true;
+      user = result.user;
+      $("#navLogLink").text("Log Out");
+      $("#navLogLink").attr("href", "javascript:logout();")
+      renderHome();
+    } else {
+      $("#user_password").val("");
+      $("#message").text("Username or password was incorrect.")
+    }
+  })
+}
+
+function logout() {
+  $.post('./user/logout', function (result) {
+    loggedIn = false;
+    user = {};
+    $("#navLogLink").text("Log In");
+    $("#navLogLink").attr("href", "javascript:login();")
+    renderHome();
+  })
 }

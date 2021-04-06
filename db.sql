@@ -1,9 +1,10 @@
 -- All book data was pulled from this site and then manually formatted for this use: 
 -- https://www.goodreads.com/list/show/24716.Highest_Rated_Books_on_Goodreads_with_at_least_100_ratings_
-
 -- clear existing tables
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_list_entries;
 -- Create tables
 CREATE TABLE authors (
   author_id SERIAL NOT NULL PRIMARY KEY,
@@ -19,6 +20,17 @@ CREATE TABLE books (
   book_description VARCHAR,
   book_rating NUMERIC(3, 2),
   author_id INTEGER REFERENCES authors (author_id)
+);
+CREATE TABLE users (
+  user_id SERIAL NOT NULL PRIMARY KEY,
+  user_name VARCHAR(255) UNIQUE,
+  user_password VARCHAR(100) NOT NULL,
+  user_joindate TIMESTAMP NOT NULL DEFAULT NOW()
+);
+CREATE TABLE user_list_entries (
+  user_id INT NOT NULL REFERENCES users(user_id),
+  book_id INT NOT NULL REFERENCES books(book_id),
+  PRIMARY KEY(user_id, book_id)
 );
 -- Seed Authors
 INSERT INTO authors (
@@ -1021,4 +1033,5 @@ Magic. It can get a guy killed.',
       WHERE author_name = 'Jim Butcher'
     )
   );
---select book_id, book_title, book_pubdate, book_rating, author_id from books order by book_id;
+-- select book_id, book_title, book_pubdate, book_rating, author_id from books order by book_id;
+-- insert into users (user_name, user_password) VALUES ('admin', 'Admin123');
