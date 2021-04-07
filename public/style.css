@@ -103,16 +103,19 @@ a:hover {
   margin-bottom: 0;
 }
 
-#loginForm {
+#loginForm,
+#registerForm {
   display: flex;
   flex-direction: column;
 }
 
-#loginForm label {
+#loginForm label,
+#registerForm label {
   margin-bottom: 12px;
 }
 
-.login-content {
+.login-content,
+.register-content {
   margin-left: auto;
   margin-right: auto;
 }

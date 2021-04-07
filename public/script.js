@@ -124,16 +124,20 @@ function renderSearch(searchTerm) {
   $("#content-div").addClass("books-content");
   $.get(`./book/search/${searchTerm}`, function (data) {
     $("#content-div").empty();
-    for (i = 0; i < 8 || i < data.result.length; i++) {
-      let $newDiv = $("<div class = 'card'></div>");
-      $newDiv.append("<h2><a href='javascript:renderBook(" + data.result[i].book_id + ")'>" + data.result[i].book_title + "</h2>");
-      $newDiv.append("<span>By: <a href='javascript:renderAuthor(" + data.result[i].author_id + ")'>" + data.result[i].author_name + "</a></span>");
-      $newDiv.append("<span> | </span>");
-      $newDiv.append("<span>Rating: " + data.result[i].book_rating + "</span>");
-      $newDiv.append("<span> | </span>");
-      $newDiv.append("<span>Published: " + data.result[i].book_pubdate + "</span>");
-      $newDiv.append("<p>" + data.result[i].book_description.slice(0, 115) + "... </p>");
-      $("#content-div").append($newDiv);
+    if (data.result.length < 1) {
+      $("#content-div").append("<h1>No results</h1>")
+    } else {
+      for (i = 0; i < 8 && i < data.result.length; i++) {
+        let $newDiv = $("<div class = 'card'></div>");
+        $newDiv.append("<h2><a href='javascript:renderBook(" + data.result[i].book_id + ")'>" + data.result[i].book_title + "</h2>");
+        $newDiv.append("<span>By: <a href='javascript:renderAuthor(" + data.result[i].author_id + ")'>" + data.result[i].author_name + "</a></span>");
+        $newDiv.append("<span> | </span>");
+        $newDiv.append("<span>Rating: " + data.result[i].book_rating + "</span>");
+        $newDiv.append("<span> | </span>");
+        $newDiv.append("<span>Published: " + data.result[i].book_pubdate + "</span>");
+        $newDiv.append("<p>" + data.result[i].book_description.slice(0, 115) + "... </p>");
+        $("#content-div").append($newDiv);
+      }
     }
   })
 }
@@ -155,7 +159,19 @@ function renderLogin() {
 }
 
 function renderRegister() {
+  clearContent();
+  $("#content-div").addClass("register-content");
+  $("#content-div").empty();
+  $("#content-div").append("<h1>Create an account</h1>")
 
+  let $form = $("<form action='javascript:register();' method='POST' id='registerForm'></form>");
+  $form.append("<label for='user_name'>Username: <input type='text' name='user_name' id='user_name' required></label>")
+  $form.append("<label for='user_password'>Password: <input type='password' name='user_password' id='user_password' required></label>")
+  $form.append("<input type='submit' value='Register'>")
+  $("#content-div").append($form);
+
+  $("#content-div").append("<p>Already have an account? <button id='register-btn' onclick='renderLogin()'>Log In</button></p>");
+  $("#content-div").append("<p id='message'></p>");
 }
 
 function login() {
@@ -188,5 +204,26 @@ function logout() {
     $("#navLogLink").text("Log In");
     $("#navLogLink").attr("href", "javascript:renderLogin();")
     renderHome();
+  })
+}
+
+function register() {
+  let user_name = $("#user_name").val();
+  let user_password = $("#user_password").val();
+  let params = {
+    user_name: user_name,
+    user_password: user_password
+  }
+
+  $.post('./user/register', params, function (result) {
+    //console.log(result);
+    if (result && result.success) {
+      //alert("Very nice!")
+      renderLogin();
+      $("#message").text("Success! Please log in.")
+    } else {
+      $("#user_password").val("");
+      $("#message").text("Username already exists.")
+    }
   })
 }
