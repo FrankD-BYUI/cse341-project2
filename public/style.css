@@ -94,6 +94,18 @@ a:hover {
   margin-bottom: .25em;
 }
 
+.home-body {
+  text-align: center;
+}
+
+.home-body h2 {
+  margin-bottom: 0;
+}
+
+pre {
+  margin: 0;
+}
+
 .book-content,
 .author-content {
   margin: 12px;

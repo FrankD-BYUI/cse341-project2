@@ -21,7 +21,7 @@ function clearContent() {
 // render the Home View
 function renderHome() {
   clearContent();
-  $("#content-div").addClass("books-content");
+  $("#content-div").addClass("home-content");
   $.get("./book/count", function (bookCount) {
     $.get("./author/count", function (authorCount) {
       $("#content-div").empty();
@@ -31,12 +31,13 @@ function renderHome() {
       $("#home-head").append("<p>We have " + bookCount.result[0].count + " books on file from " +
         authorCount.result[0].count + " authors!</p>");
 
-      let $newDiv = $("<div></div>")
+      let $newDiv = $("<div class='home-body'></div>")
       if (!loggedIn) {
-        $newDiv.append("<h2>Please <a href='javascript:renderLogin()'>log in</a> to create a reading list.</h2>")
+        $newDiv.append("<h2>Please <a href='javascript:renderLogin()'>log in</a> or <a href='javascript:renderRegister()'>Create an account</a>.</h2>")
       } else {
-        $newDiv.append("<h2>Thank you for logging in.</h2>")
+        $newDiv.append(`<h2>Welcome ${user.user_name}.</h2>`)
       }
+      $newDiv.append(`<pre>${asciiBook}</pre>`);
       $("#content-div").append($newDiv);
     })
   })
@@ -227,3 +228,33 @@ function register() {
     }
   })
 }
+
+// Source for art: https://www.asciiart.eu/books/books
+let asciiBook =
+  ` ____________________________________________________
+|____________________________________________________|
+| __     __   ____   ___ ||  ____    ____     _  __  |
+||  |__ |--|_| || |_|   |||_|**|*|__|+|+||___| ||  | |
+||==|^^||--| |=||=| |=*=||| |~~|~|  |=|=|| | |~||==| |
+||  |##||  | | || | |JRO|||-|  | |==|+|+||-|-|~||__| |
+||__|__||__|_|_||_|_|___|||_|__|_|__|_|_||_|_|_||__|_|
+||_______________________||__________________________|
+| _____________________  ||      __   __  _  __    _ |
+||=|=|=|=|=|=|=|=|=|=|=| __..\\/ |  |_|  ||#||==|  / /|
+|| | | | | | | | | | | |/\\ \\  \\\\|++|=|  || ||==| / / |
+||_|_|_|_|_|_|_|_|_|_|_/_/\\_.___\\__|_|__||_||__|/_/__|
+|____________________ /\\~()/()~//\\ __________________|
+| __   __    _  _     \\_  (_ .  _/ _    ___     _____|
+||~~|_|..|__| || |_ _   \\ //\\\\ /  |=|__|~|~|___| | | |
+||--|+|^^|==|1||2| | |__/\\ __ /\\__| |==|x|x|+|+|=|=|=|
+||__|_|__|__|_||_|_| /  \\ \\  / /  \\_|__|_|_|_|_|_|_|_|
+|_________________ _/    \\/\\/\\/    \\_ _______________|
+| _____   _   __  |/      \\../      \\|  __   __   ___|
+||_____|_| |_|##|_||   |   \\/ __|   ||_|==|_|++|_|-|||
+||______||=|#|--| |\\   \\   o    /   /| |  |~|  | | |||
+||______||_|_|__|_|_\\   \\  o   /   /_|_|__|_|__|_|_|||
+|_________ __________\\___\\____/___/___________ ______|
+|         /                 ______           /|      |
+|        /                 /  /  / |        / |      |
+|       /                 /__/__/ (_)      /  |      |
+|____________________________________________________|`
